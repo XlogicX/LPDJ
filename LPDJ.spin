@@ -622,10 +622,21 @@ Silent
   waitcnt (15677419 + cnt) 
   Playnote (2, aG7, 1, 0, 0, 0, 10, 17) 
 
-repeat 1
   waitcnt (15677419 + cnt)
   Playnote (1, aC7, 1, 0, 0, 0, 10, 17)
   Playnote (2, aE7, 1, 0, 0, 0, 10, 17)
+  Playnote (3, aG7, 1, 0, 0, 0, 10, 17)
+
+  waitcnt (15677419 + cnt)
+  Playnote (2, aC7, 1, 0, 0, 0, 10, 17)
+  waitcnt (15677419 + cnt) 
+  Playnote (2, aD7s, 1, 0, 0, 0, 10, 17)
+  waitcnt (15677419 + cnt) 
+  Playnote (2, aG7, 1, 0, 0, 0, 10, 17) 
+
+  waitcnt (15677419 + cnt)
+  Playnote (1, aC7, 1, 0, 0, 0, 10, 17)
+  Playnote (2, aD7s, 1, 0, 0, 0, 10, 17)
   Playnote (3, aG7, 1, 0, 0, 0, 10, 17)
 
 PUB Start (audio_pin, d_div)
@@ -716,25 +727,11 @@ DAT
 --------------------------------------------*          Mixer Engine:         *------------------------------------------------------
                                             **********************************
                                             
-Function:     This engine will take the 4 samples to mix (as an address of each), mixt them, add effects, then put the output on
+Function:     This engine will take the 4 samples to mix (as an address of each), mix them, add effects, then put the output on
               a shared address for consumption by PCM engine.
 How it works:
 Notes:        -Continiously runs (without being called); expect the output address to hold a semi up to date mix of values in the
               channel addresses in real time.
-              -The addressess that hold another address that hold the value sounds confusing, and I shouldn't just leave it at
-              lol'ing at it in the comments below. The indirectness allows me to be flexible. This engine merely asks where the
-              real data is located, instead of all of the extra overhead of passing several real values everywhere. Other cores
-              are going to be constantly updating the data in real time, so this engine only cares where that data currently is,
-              and will then play with it. Visuall analogy (painful):
-                        Addresses               value in address
-                        1337 W. HaK Dr.         Actual Sample chunk of data     (a value)
-                        1369 E. Noob St.        1337 W. HaK Dr.                 (a value, however, of an address)
-
-                        This code grabs the address of the address (it gets the 1369 address),
-                        It puts the value of that address (1337 Dr.) in a local variable,
-                        It then overwrites the value of the address from that local variable (1337 Dr.) into the variable.
-                        So now we have real data in a local workable variable (inderectly, but flexibly)
-                        ...lol
                         
 }}
 
@@ -769,26 +766,24 @@ Mixer         mov       mx_adr1, par
               rdlong    mx_val2, mx_adr2
               rdlong    mx_val3, mx_adr3
               rdlong    mx_val4, mx_adr4
-              ''put the values of the addresses of the addresses in the local workspace (lolz at the confusing).
+              ''put the values of the addresses of the addresses in the local workspace (double dereferencing)
               rdlong    mx_val1, mx_val1
               rdlong    mx_val2, mx_val2
               rdlong    mx_val3, mx_val3
               rdlong    mx_val4, mx_val4                             
 
-
-
-
+              ''Set Volumes and Mix
               'divide them all by 4
-              shr       mx_val1, #2             'Divide by 4
-              shr       mx_val2, #2             'Divide by 4 
-              shr       mx_val3, #2             'Divide by 4 
-              shr       mx_val4, #2             'Divide by 4 
+              shr       mx_val1, #2
+              shr       mx_val2, #2
+              shr       mx_val3, #2
+              shr       mx_val4, #2
               'read volumes
               rdlong    vol1, vol1_adr
               rdlong    vol2, vol2_adr
               rdlong    vol3, vol3_adr
               rdlong    vol4, vol4_adr
-              'set volumes
+              'set/apply volumes (done with shifting, not the best method, but computationally quick)
               shr       mx_val1, vol1
               shr       mx_val2, vol2
               shr       mx_val3, vol3
@@ -825,39 +820,38 @@ Mixer         mov       mx_adr1, par
 
               jmp       #:MXStart                            
               
-mx_adr1       long 0
-mx_adr2       long 0
-mx_adr3       long 0
-mx_adr4       long 0
-mx_out_adr    long 0
 
-mx_val1       long 0
-mx_val2       long 0
-mx_val3       long 0
-mx_val4       long 0
-
-qual_adr     long 0
-qual         long 0
-
-m_garb_adr    long 0
-m_garb        long 0
-garbmask      long 0
-
-m_not_adr     long 0
-m_not         long 0
-notmask       long 0
-
-vol1_adr      long 0
-vol2_adr      long 0
-vol3_adr      long 0
-vol4_adr      long 0
-vol1          long 0
-vol2          long 0
-vol3          long 0
-vol4          long 0
-
-qualmask      long 0
 F_Mask        long $FFFFFFFF
+
+'Pointers
+mx_adr1       res 1
+mx_adr2       res 1
+mx_adr3       res 1
+mx_adr4       res 1
+mx_out_adr    res 1
+qual_adr      res 1 
+m_garb_adr    res 1
+m_not_adr     res 1
+vol1_adr      res 1
+vol2_adr      res 1
+vol3_adr      res 1
+vol4_adr      res 1
+
+'Values
+mx_val1       res 1
+mx_val2       res 1
+mx_val3       res 1
+mx_val4       res 1
+qual          res 1
+m_garb        res 1
+garbmask      res 1
+m_not         res 1
+notmask       res 1
+vol1          res 1
+vol2          res 1
+vol3          res 1
+vol4          res 1
+qualmask      res 1
 
 ''
 ''************************************************************************************************************************************
