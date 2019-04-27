@@ -62,510 +62,18 @@ Ver 2.5 [9-3-2009]:
 }}
 
 CON
-
-'Notes
-'
-'               Theory          Actual                  Tolerance                        
-'               (hz)            (hz)                     ┣──────────Why bother even calling it a note if there is a number here
-'                                                        ┣┣─────────Will start to sound way out of tune
-'Bass Notes                                              ↓↓↓────────You want this low                                          
-  C0  = 182     '16.35          16.38                   .00231
-  C0s = 172     '17.32          17.34                   .00119
-  D0  = 163     '18.35          18.29                   .00284
-  D0s = 153     '19.45          19.49                   .00226
-  E0  = 145     '20.6           20.56                   .00148
-  F0  = 137     '21.83          21.77                   .00273
-  F0s = 129     '23.12          23.12                   .00003
-  G0  = 122     '24.5           24.44                   .00215
-  G0s = 115     '25.96          25.93                   .00094
-  A0  = 108     '27.5           27.61                   .00422
-  A0s = 102     '29.14          29.24                   .00345
-  B0  = 97      '30.87          30.74                   .00396
-
-  C1  = 91      '32.7           32.77                   .00231
-  C1s = 86      '34.65          34.68                   .00090
-  D1  = 81      '36.71          36.82                   .00304
-  D1s = 77      '38.89          38.73                   .00401
-  E1  = 72      '41.2           41.42                   .00543
-  F1  = 68      '43.65          43.86                   .00482
-  F1s = 64      '46.25          46.6                    .00757
-  G1  = 61      '49             48.89                   .00215
-  G1s = 57      '51.91          52.32                   .00795
-  A1  = 55      '55             55.23                   .00422
-  A1s = 51      '58.27          58.48                   .00362
-  B1  = 48      '61.74          62.13                   .00639
-
-  C2  = 46      '65.41          64.83                   .00881
-  C2s = 43      '69.3           69.36                   .00090
-  D2  = 41      '73.42          72.74                   .00927
-  D2s = 38      '77.78          78.48                   .00903
-  E2  = 36      '82.41          82.84                   .00530
-  F2  = 34      '87.31          87.72                   .00471
-  F2s = 32      '92.5           93.20                   .00757
-  G2  = 30      '98             99.41                   .01428
-  G2s = 29      '103.83         102.84                  .00955
-  A2  = 27      '110            110.46                  .00422
-  A2s = 26      '116.54         114.71                  .01591
-  B2  = 24      '123.47         124.27                  .00647
-
-  C3  = 23      '130.81         129.67                  0.00873                 
-  C3s = 22      '138.59         135.57                  0.02226
-  D3  = 20      '146.83         149.12                  0.01542
-  D3s = 19      '155.56         156.97                  0.00903
-  E3  = 18      '164.81         165.69                  0.00537
-  F3  = 17      '174.61         175.44                  0.00476
-  F3s = 16      '185            186.41                  0.00757
-  G3  = 15      '196            198.83                  0.01428
-  G3s = 14      '207.65         213.04                  0.02531
-  A3  = 14      '220            213.04                  0.03266
-  A3s = 13      '233.08         229.42                  0.01591
-  B3  = 12      '246.94         248.54                  0.00647
-                                                        
-  C4  = 11      '261.63         271.14                  0.03509
-  C4s = 11      '277.18         271.14                  0.02226
-  D4  = 10      '293.66         298.25                  0.01542
-  D4s = 10      '311.13         298.25                  0.04316
-  E4  = 9       '329.63         331.39                  0.00533
-  F4  = 9       '349.23         331.39                  0.05381
-  F4s = 8       '369.99         372.82                  0.00760
-  G4  = 8       '392            372.82                  0.05144
-  G4s = 7       '415.3          426.08                  0.02531
-  A4  = 7       '440            426.08                  0.03266
-  A4s = 6       '466.16         497.09                  0.06224
-  B4  = 6       '493.88         497.09                  0.00647
-                                                        
-  C5  = 6       '523.25         497.09                  0.05261
-  C5s = 5       '554.37         596.51                  0.07065
-  D5  = 5       '587.33         596.51                  0.01540
-  D5s = 5       '622.25         596.51                  0.04314
-  E5  = 5       '659.26         596.51                  0.10518
-  F5  = 4       '698.46         745.64                  0.06328
-  F5s = 4       '739.99         745.64                  0.00758
-  G5  = 4       '783.99         745.64                  0.05142
-  G5s = 4       '830.61         745.64                  0.11395
-  A5  = 3       '880            994.19                  0.11486
-  A5s = 3       '932.33         994.19                  0.06223
-  B5  = 3       '987.77         994.19                  0.00646
-                                                        
-  C6  = 3       '1046.5         994.19                  0.05261
-  C6s = 3       '1108.73        994.19                  0.11520
-  D6  = 3       '1174.66        994.19                  0.18152
-  D6s = 2       '1244.51        1491.29                 0.16548
-  E6  = 2       '1318.51        1491.29                 0.11586
-  F6  = 2       '1396.91        1491.29                 0.06329
-  F6s = 2       '1479.98        1491.29                 0.00758
-  G6  = 2       '1567.98        1491.29                 0.05142
-  G6s = 2       '1661.22        1491.29                 0.11395
-  A6  = 2       '1760           1491.29                 0.18019
-  A6s = 2       '1864.66        1491.29                 0.25037
-  B6  = 2       '1975.53        1491.29                 0.32471
-                                                        
-  C7  = 1       '2093           2982.58                 0.29826
-  C7s = 1       '2217.46        2982.58                 0.25653
-  D7  = 1       '2349.32        2982.58                 0.21232
-  D7s = 1       '2489.02        2982.58                 0.16548
-  E7  = 1       '2637.02        2982.58                 0.11586
-  F7  = 1       '2793.83        2982.58                 0.06328
-  F7s = 1       '2959.96        2982.58                 0.00758
-  G7  = 1       '3135.96        2982.58                 0.05142
-  G7s = 1       '3322.44        2982.58                 0.11395
-  A7  = 1       '3520           2982.58                 0.18019
-  A7s = 1       '3729.31        2982.58                 0.25036
-  B7  = 1       '3951.07        2982.58                 0.32471
-                                                        
-  C8  = 1       '4186.01        2982.58                 0.40349
-  C8s = 1       '4434.92        2982.58                 0.48694
-  D8  = 1       '4698.64        2982.58                 0.57536
-  D8s = 1       '4978.03        2982.58                 0.66903
-                
-
-'Tenor Notes                                          
-  tC0  = 365    '16.35          16.34                   0.00043
-  tC0s = 344    '17.32          17.34                   0.00118
-  tD0  = 325    '18.35          18.35                   0.00023
-  tD0s = 307    '19.45          19.43                   0.00100
-  tE0  = 290    '20.6           20.56                   0.00148
-  tF0  = 273    '21.83          21.85                   0.00093
-  tF0s = 258    '23.12          23.12                   0.00000
-  tG0  = 243    '24.5           24.54                   0.00195
-  tG0s = 230    '25.96          25.93                   0.00094
-  tA0  = 217    '27.5           27.48                   0.00039
-  tA0s = 205    '29.14          29.09                   0.00143
-  tB0  = 193    '30.87          30.90                   0.00121
-
-  tC1  = C0     '32.7           32.77                   0.00230
-  tC1s = C0s    '34.65          34.68                   0.00089
-  tD1  = D0     '36.71          36.82                   0.00304
-  tD1s = D0s    '38.89          38.98                   0.00251
-  tE1  = E0     '41.2           41.13                   0.00148
-  tF1  = F0     '43.65          43.54                   0.00249
-  tF1s = F0s    '46.25          46.24                   0.00018
-  tG1  = G0     '49             48.89                   0.00215
-  tG1s = G0s    '51.91          51.87                   0.00075
-  tA1  = A0     '55             55.23                   0.00421
-  tA1s = A0s    '58.27          58.48                   0.00362
-  tB1  = B0     '61.74          61.49                   0.00395
-
-  tC2  = C1     '65.41          65.55                   0.00215
-  tC2s = C1s    '69.3           69.36                   0.00089
-  tD2  = D1     '73.42          73.64                   0.00304
-  tD2s = D1s    '77.78          77.46                   0.00400
-  tE2  = E1     '82.41          82.84                   0.00530
-  tF2  = F1     '87.31          87.72                   0.00470
-  tF2s = F1s    '92.5           93.20                   0.00757
-  tG2  = G1     '98             97.78                   0.00215
-  tG2s = G1s    '103.83         104.65                  0.00785
-  tA2  = A1     '110            110.46                  0.00421
-  tA2s = A1s    '116.54         116.96                  0.00362
-  tB2  = B1     '123.47         124.27                  0.00647
-
-  tC3  = C2     '130.81         129.67                  0.00873
-  tC3s = C2s    '138.59         138.72                  0.00097
-  tD3  = D2     '146.83         145.49                  0.00919
-  tD3s = D2s    '155.56         156.97                  0.00903
-  tE3  = E2     '164.81         165.69                  0.00536
-  tF3  = F2     '174.61         175.44                  0.00476
-  tF3s = F2s    '185            186.41                  0.00757
-  tG3  = G2     '196            198.83                  0.01427
-  tG3s = G2s    '207.65         205.69                  0.00950
-  tA3  = A2     '220            220.93                  0.00421
-  tA3s = A2s    '233.08         229.42                  0.01591
-  tB3  = B2     '246.94         248.54                  0.00647
-
-  tC4  = C3     '261.63         259.35                  0.00877
-  tC4s = C3s    '277.18         271.14                  0.02226
-  tD4  = D3     '293.66         298.25                  0.01541
-  tD4s = D3s    '311.13         313.95                  0.00900
-  tE4  = E3     '329.63         331.39                  0.00533
-  tF4  = F3     '349.23         350.89                  0.00473
-  tF4s = F3s    '369.99         372.82                  0.00759
-  tG4  = G3     '392            397.67                  0.01427
-  tG4s = G3s    '415.3          426.08                  0.02530
-  tA4  = A3     '440            426.08                  0.03266
-  tA4s = A3s    '466.16         458.85                  0.01591
-  tB4  = B3     '493.88         497.09                  0.00647
-
-  tC5  = C4     '523.25         542.28                  0.03510
-  tC5s = C4s    '554.37         542.28                  0.02228
-  tD5  = D4     '587.33         596.51                  0.01539
-  tD5s = D4s    '622.25         596.51                  0.04313
-  tE5  = E4     '659.26         662.79                  0.00533
-  tF5  = F4     '698.46         662.79                  0.05380
-  tF5s = F4s    '739.99         745.64                  0.00758
-  tG5  = G4     '783.99         745.64                  0.05142
-  tG5s = G4s    '830.61         852.16                  0.02529
-  tA5  = A4     '880            852.16                  0.03266
-  tA5s = A4s    '932.33         994.19                  0.06222
-  tB5  = B4     '987.77         994.19                  0.00646
-
-  tC6  = C5     '1046.5         994.19                  0.05261
-  tC6s = C5s    '1108.73        1193.03                 0.07066
-  tD6  = D5     '1174.66        1193.03                 0.01539
-  tD6s = D5s    '1244.51        1193.03                 0.04314
-  tE6  = E5     '1318.51        1193.03                 0.10517
-  tF6  = F5     '1396.91        1491.29                 0.06328
-  tF6s = F5s    '1479.98        1491.29                 0.00758
-  tG6  = G5     '1567.98        1491.29                 0.05142
-  tG6s = G5s    '1661.22        1491.29                 0.11394
-  tA6  = A5     '1760           1988.38                 0.11486
-  tA6s = A5s    '1864.66        1988.38                 0.06222
-  tB6  = B5     '1975.53        1988.38                 0.00646
-            
-  tC7  = C6     '2093           1988.38                 0.05261
-  tC7s = C6s    '2217.46        1988.38                 0.11520
-  tD7  = D6     '2349.32        1988.38                 0.18152
-  tD7s = D6s    '2489.02        2982.58                 0.16548
-  tE7  = E6     '2637.02        2982.58                 0.11585
-  tF7  = F6     '2793.83        2982.58                 0.06328
-  tF7s = F6s    '2959.96        2982.58                 0.00758
-  tG7  = G6     '3135.96        2982.58                 0.05142
-  tG7s = G6s    '3322.44        2982.58                 0.11394
-  tA7  = A6     '3520           2982.58                 0.18018
-  tA7s = A6s    '3729.31        2982.58                 0.25036
-  tB7  = B6     '3951.07        2982.58                 0.32471
-            
-  tC8  = C7     '4186.01        5965.16                 0.29825
-  tC8s = C7s    '4434.92        5965.16                 0.25653
-  tD8  = D7     '4698.64        5965.16                 0.21231
-  tD8s = D7s    '4978.03        5965.16                 0.16548
-
-
-'Alto Notes                                         
-  aC0  = 730    '16.35          16.34                   0.00043
-  aC0s = 689    '17.32          17.31                   0.00026
-  aD0  = 650    '18.35          18.35                   0.00023
-  aD0s = 613    '19.45          19.46                   0.00062
-  aE0  = 579    '20.6           20.60                   0.00024
-  aF0  = 547    '21.83          21.81                   0.00089
-  aF0s = 516    '23.12          23.12                   0.00000
-  aG0  = 487    '24.5           24.49                   0.00000
-  aG0s = 460    '25.96          25.93                   0.00094
-  aA0  = 434    '27.5           27.48                   0.00039
-  aA0s = 409    '29.14          29.16                   0.00101
-  aB0  = 386    '30.87          30.90                   0.00121
-
-  aC1  = tC0    '32.7           32.68                   0.00043
-  aC1s = tC0s   '34.65          34.68                   0.00089
-  aD1  = tD0    '36.71          36.70                   0.00000
-  aD1s = tD0s   '38.89          38.86                   0.00074
-  aE1  = tE0    '41.2           41.13                   0.00148
-  aF1  = tF0    '43.65          43.70                   0.00116
-  aF1s = tF0s   '46.25          46.24                   0.00018
-  aG1  = tG0    '49             49.09                   0.00195
-  aG1s = tG0s   '51.91          51.87                   0.00075
-  aA1  = tA0    '55             54.97                   0.00039
-  aA1s = tA0s   '58.27          58.19                   0.00125
-  aB1  = tB0    '61.74          61.81                   0.00121
-
-  aC2  = C0     '65.41          65.55                   0.00215
-  aC2s = C0s    '69.3           69.36                   0.00089
-  aD2  = D0     '73.42          73.64                   0.00304
-  aD2s = D0s    '77.78          77.97                   0.00251
-  aE2  = E0     '82.41          82.27                   0.00160
-  aF2  = F0     '87.31          87.08                   0.00261
-  aF2s = F0s    '92.5           92.48                   0.00018
-  aG2  = G0     '98             97.78                   0.00215
-  aG2s = G0s    '103.83         103.74                  0.00084
-  aA2  = A0     '110            110.46                  0.00421
-  aA2s = A0s    '116.54         116.96                  0.00362
-  aB2  = B0     '123.47         122.99                  0.00387
-            
-  aC3  = C1     '130.81         131.10                  0.00223
-  aC3s = C1s    '138.59         138.72                  0.00097
-  aD3  = D1     '146.83         147.28                  0.00310
-  aD3s = D1s    '155.56         154.93                  0.00400
-  aE3  = E1     '164.81         165.69                  0.00536
-  aF3  = F1     '174.61         175.44                  0.00476
-  aF3s = F1s    '185            186.41                  0.00757
-  aG3  = G1     '196            195.57                  0.00215
-  aG3s = G1s    '207.65         209.30                  0.00790
-  aA3  = A1     '220            220.93                  0.00421
-  aA3s = A1s    '233.08         233.92                  0.00362
-  aB3  = B1     '246.94         248.54                  0.00647
-            
-  aC4  = C2     '261.63         259.35                  0.00877
-  aC4s = C2s    '277.18         277.44                  0.00097
-  aD4  = D2     '293.66         290.98                  0.00919
-  aD4s = D2s    '311.13         313.95                  0.00900
-  aE4  = E2     '329.63         331.39                  0.00533
-  aF4  = F2     '349.23         350.89                  0.00473
-  aF4s = F2s    '369.99         372.82                  0.00759
-  aG4  = G2     '392            397.67                  0.01427
-  aG4s = G2s    '415.3          411.39                  0.00950
-  aA4  = A2     '440            441.86                  0.00421
-  aA4s = A2s    '466.16         458.85                  0.01591
-  aB4  = B2     '493.88         497.09                  0.00647
-            
-  aC5  = C3     '523.25         518.70                  0.00875
-  aC5s = C3s    '554.37         542.28                  0.02228
-  aD5  = D3     '587.33         596.51                  0.01539
-  aD5s = D3s    '622.25         627.91                  0.00901
-  aE5  = E3     '659.26         662.79                  0.00533
-  aF5  = F3     '698.46         701.78                  0.00473
-  aF5s = F3s    '739.99         745.64                  0.00758
-  aG5  = G3     '783.99         795.35                  0.01428
-  aG5s = G3s    '830.61         852.16                  0.02529
-  aA5  = A3     '880            852.16                  0.03266
-  aA5s = A3s    '932.33         917.71                  0.01592
-  aB5  = B3     '987.77         994.19                  0.00646
-            
-  aC6  = C4     '1046.5         1084.57                 0.03510
-  aC6s = C4s    '1108.73        1084.57                 0.02227
-  aD6  = D4     '1174.66        1193.03                 0.01539
-  aD6s = D4s    '1244.51        1193.03                 0.04314
-  aE6  = E4     '1318.51        1325.59                 0.00534
-  aF6  = F4     '1396.91        1325.59                 0.05380
-  aF6s = F4s    '1479.98        1491.29                 0.00758
-  aG6  = G4     '1567.98        1491.29                 0.05142
-  aG6s = G4s    '1661.22        1704.33                 0.02529
-  aA6  = A4     '1760           1704.33                 0.03266
-  aA6s = A4s    '1864.66        1988.38                 0.06222
-  aB6  = B4     '1975.53        1988.38                 0.00646
-            
-  aC7  = C5     '2093           1988.38                 0.05261
-  aC7s = C5s    '2217.46        2386.06                 0.07066
-  aD7  = D5     '2349.32        2386.06                 0.01539
-  aD7s = D5s    '2489.02        2386.06                 0.04314
-  aE7  = E5     '2637.02        2386.06                 0.10517
-  aF7  = F5     '2793.83        2982.58                 0.06328
-  aF7s = F5s    '2959.96        2982.58                 0.00758
-  aG7  = G5     '3135.96        2982.58                 0.05142
-  aG7s = G5s    '3322.44        2982.58                 0.11394
-  aA7  = A5     '3520           3976.77                 0.11486
-  aA7s = A5s    '3729.31        3976.77                 0.06222
-  aB7  = B5     '3951.07        3976.77                 0.00646
-            
-  aC8  = C6     '4186.01        3976.77                 0.05261
-  aC8s = C6s    '4434.92        3976.77                 0.11520
-  aD8  = D6     '4698.64        3976.77                 0.18152
-  aD8s = D6s    '4978.03        5965.16                 0.16548
-
-
-
-'soprano Notes                                   
-  sC0  = 1459   '16.35          16.35                   0.00025
-  sC0s = 1378   '17.32          17.31                   0.00026
-  sD0  = 1300   '18.35          18.35                   0.00023
-  sD0s = 1227   '19.45          19.44                   0.00018
-  sE0  = 1158   '20.6           20.60                   0.00024
-  sF0  = 1093   '21.83          21.83                   0.00000
-  sF0s = 1032   '23.12          23.12                   0.00000
-  sG0  = 974    '24.5           24.49                   0.00000
-  sG0s = 919    '25.96          25.96                   0.00014
-  sA0  = 868    '27.5           27.48                   0.00039
-  sA0s = 819    '29.14          29.13                   0.00020
-  sB0  = 773    '30.87          30.86                   0.00000
-
-  sC1  = aC0    '32.7           32.68                   0.00043
-  sC1s = aC0s   '34.65          34.63                   0.00055
-  sD1  = aD0    '36.71          36.70                   0.00000
-  sD1s = aD0s   '38.89          38.86                   0.00074
-  sE1  = aE0    '41.2           41.21                   0.00024
-  sF1  = aF0    '43.65          43.62                   0.00066
-  sF1s = aF0s   '46.25          46.24                   0.00018
-  sG1  = aG0    '49             48.99                   0.00000
-  sG1s = aG0s   '51.91          51.87                   0.00075
-  sA1  = aA0    '55             54.97                   0.00039
-  sA1s = aA0s   '58.27          58.33                   0.00118
-  sB1  = aB0    '61.74          61.81                   0.00121
-
-  sC2  = tC0    '65.41          65.37                   0.00058
-  sC2s = tC0    '69.3           69.36                   0.00089
-  sD2  = tD0    '73.42          73.41                   0.00000
-  sD2s = tD0    '77.78          77.72                   0.00074
-  sE2  = tE0    '82.41          82.27                   0.00160
-  sF2  = tF0    '87.31          87.40                   0.00104
-  sF2s = tF0    '92.5           92.48                   0.00018
-  sG2  = tG0    '98             98.19                   0.00195
-  sG2s = tG0    '103.83         103.74                  0.00084
-  sA2  = tA0    '110            109.95                  0.00039
-  sA2s = tA0    '116.54         116.39                  0.00125
-  sB2  = tB0    '123.47         123.63                  0.00129
-            
-  sC3  = C0     '130.81         131.10                  0.00223
-  sC3s = C0s    '138.59         138.72                  0.00097
-  sD3  = D0     '146.83         147.28                  0.00310
-  sD3s = D0s    '155.56         155.95                  0.00251
-  sE3  = E0     '164.81         164.55                  0.00154
-  sF3  = F0     '174.61         174.16                  0.00255
-  sF3s = F0s    '185            184.96                  0.00018
-  sG3  = G0     '196            195.57                  0.00215
-  sG3s = G0s    '207.65         207.48                  0.00080
-  sA3  = A0     '220            220.93                  0.00421
-  sA3s = A0s    '233.08         233.92                  0.00362
-  sB3  = B0     '246.94         245.98                  0.00387
-            
-  sC4  = C1     '261.63         262.20                  0.00219
-  sC4s = C1s    '277.18         277.44                  0.00097
-  sD4  = D1     '293.66         294.57                  0.00310
-  sD4s = D1s    '311.13         309.87                  0.00403
-  sE4  = E1     '329.63         331.39                  0.00533
-  sF4  = F1     '349.23         350.89                  0.00473
-  sF4s = F1s    '369.99         367.08                  0.00790
-  sG4  = G1     '392            391.15                  0.00215
-  sG4s = G1s    '415.3          418.60                  0.00790
-  sA4  = A1     '440            441.86                  0.00421
-  sA4s = A1s    '466.16         467.85                  0.00362
-  sB4  = B1     '493.88         497.09                  0.00647
-            
-  sC5  = C2     '523.25         518.70                  0.00875
-  sC5s = C2s    '554.37         554.89                  0.00095
-  sD5  = D2     '587.33         581.96                  0.00921
-  sD5s = D2s    '622.25         627.91                  0.00901
-  sE5  = E2     '659.26         662.79                  0.00533
-  sF5  = F2     '698.46         701.78                  0.00473
-  sF5s = F2s    '739.99         745.64                  0.00758
-  sG5  = G2     '783.99         795.35                  0.01428
-  sG5s = G2s    '830.61         822.78                  0.00951
-  sA5  = A2     '880            883.72                  0.00421
-  sA5s = A2s    '932.33         917.71                  0.01592
-  sB5  = B2     '987.77         994.19                  0.00646
-            
-  sC6  = C3     '1046.5         1037.41                 0.00875
-  sC6s = C3s    '1108.73        1084.57                 0.02227
-  sD6  = D3     '1174.66        1193.03                 0.01539
-  sD6s = D3s    '1244.51        1255.82                 0.00900
-  sE6  = E3     '1318.51        1325.59                 0.00534
-  sF6  = F3     '1396.91        1403.56                 0.00474
-  sF6s = F3s    '1479.98        1491.29                 0.00758
-  sG6  = G3     '1567.98        1590.71                 0.01428
-  sG6s = G3s    '1661.22        1704.33                 0.02529
-  sA6  = A3     '1760           1704.33                 0.03266
-  sA6s = A3s    '1864.66        1835.43                 0.01592
-  sB6  = B3     '1975.53        1988.38                 0.00646
-            
-  sC7  = C4     '2093           2169.15                 0.03510
-  sC7s = C4s    '2217.46        2386.06                 0.07066
-  sD7  = D4     '2349.32        2386.06                 0.01539
-  sD7s = D4s    '2489.02        2386.06                 0.04314
-  sE7  = E4     '2637.02        2651.18                 0.00534
-  sF7  = F4     '2793.83        2651.18                 0.05380
-  sF7s = F4s    '2959.96        2982.58                 0.00758
-  sG7  = G4     '3135.96        2982.58                 0.05142
-  sG7s = G4s    '3322.44        3408.66                 0.02529
-  sA7  = A4     '3520           3408.66                 0.03266
-  sA7s = A4s    '3729.31        3976.77                 0.06222
-  sB7  = B4     '3951.07        3976.77                 0.00646
-            
-  sC8  = C5     '4186.01        3976.77                 0.05261
-  sC8s = C5s    '4434.92        4772.13                 0.07066
-  sD8  = D5     '4698.64        4772.13                 0.01539
-  sD8s = D5s    '4978.03        4772.13                 0.04314
+CON
+  _clkmode = xtal1 + pll16x
+  _xinfreq = 5_000_000
 
   
 DAT
 'Channels
-'They are initialized as empty, but this is the area that the 32-bit wave shapes will go.
-chan1         long      $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF
-              long      $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF
-              long      $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0
-              long      $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF
-              long      $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF
-              long      $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0
-              long      $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF
-              long      $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF
-              long      $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0
-              long      $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF
-              long      $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF
-              long      $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0
-chan2         long      $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF
-              long      $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF
-              long      $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0
-              long      $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF
-              long      $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF
-              long      $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0
-              long      $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF
-              long      $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF
-              long      $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0
-              long      $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF
-              long      $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF
-              long      $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0
-chan3         long      $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF
-              long      $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF
-              long      $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0
-              long      $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF
-              long      $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF
-              long      $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0
-              long      $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF
-              long      $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF
-              long      $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0
-              long      $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF
-              long      $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF
-              long      $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0
-chan4         long      $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF
-              long      $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF
-              long      $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0
-              long      $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF
-              long      $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF
-              long      $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0
-              long      $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF
-              long      $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF
-              long      $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0
-              long      $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF
-              long      $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF
-              long      $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0
-                                                                                                
-              
+chan1         long      0[128]                                                                 
+chan2         long      $11111111[128]
+chan3         long      $22222222[128]
+chan4         long      $33333333[128]
+
 VAR           
                       'par offset
 long    freq                        'variable that controls wave frequency (has limits of how low it can be [8])
@@ -603,6 +111,11 @@ long    ch4_done      '116           x
 
 long    pin           '120           'what pin to send the audio to
 
+'Instrument Variables
+long    duty
+long    divisions
+long    table_adr
+
 long    pitch_bal                    'variable used to even out duration based on pitch
 long    dur_div                      'what number equals a second with dur parameter. For example, if dur_div is 100, a
                                      'value of 50 passed to the dur param would be half a second.
@@ -615,29 +128,16 @@ PUB main
 Start(15,100)
 
 Silent
+  duty := 8
+  divisions := 6
+  table_adr := @chan1
+  cognew(@InstPulse, @duty)
+  'Re-run tests (in GEAR), to make sure all divisions work, and different duties work. Try other channels too
+
+repeat
  
-  Playnote (2, aC7, 1, 0, 0, 0, 10, 17)
-  waitcnt (15677419 + cnt) 
-  Playnote (2, aE7, 1, 0, 0, 0, 10, 17)
-  waitcnt (15677419 + cnt) 
-  Playnote (2, aG7, 1, 0, 0, 0, 10, 17) 
-
-  waitcnt (15677419 + cnt)
-  Playnote (1, aC7, 1, 0, 0, 0, 10, 17)
-  Playnote (2, aE7, 1, 0, 0, 0, 10, 17)
-  Playnote (3, aG7, 1, 0, 0, 0, 10, 17)
-
-  waitcnt (15677419 + cnt)
-  Playnote (2, aC7, 1, 0, 0, 0, 10, 17)
-  waitcnt (15677419 + cnt) 
-  Playnote (2, aD7s, 1, 0, 0, 0, 10, 17)
-  waitcnt (15677419 + cnt) 
-  Playnote (2, aG7, 1, 0, 0, 0, 10, 17) 
-
-  waitcnt (15677419 + cnt)
-  Playnote (1, aC7, 1, 0, 0, 0, 10, 17)
-  Playnote (2, aD7s, 1, 0, 0, 0, 10, 17)
-  Playnote (3, aG7, 1, 0, 0, 0, 10, 17)
+  'Playnote (3, 3, 1, 0, 0, 0, 5, 17)
+  waitcnt(clkfreq/2 + cnt)
 
 PUB Start (audio_pin, d_div)
  
@@ -652,8 +152,10 @@ PUB Start (audio_pin, d_div)
   freq3     := $0010
   freq4     := $0010
   quality   := 13
-
-  'cognew(@DeCom, @freq)         ' start the decoder cog
+  ch1_done   := 1
+  ch2_done   := 1
+  ch3_done   := 1
+  ch4_done   := 1
 
   mix1_adr :=  data_adr
   mix2_adr :=  data_adr + $200
@@ -719,6 +221,96 @@ PUB PlayNote (chan, pitch, vol, Wqual, garb, ors, dur, waveshape)
       DecomFlags := %1000
       ch4_done   := 0
       
+DAT
+
+              org       0
+{{
+                                            **********************************
+--------------------------------------------*     PulseWave Instrument:      *------------------------------------------------------
+                                            **********************************
+                                            
+Function:     This is a pulsewave instrument. It takes two duty cycle arguments and a divisional argument.
+Duty Cycle:   0-16: The duty cycle value is a value from 0-16, but 1-15 would make the most sense audibly. Values outside of this
+              range would be considered stupid
+Divisions:    0-6: There are 128 sample values per wave table. Best audio quality would be to set divisions at 0. However, if you
+              set the divisions to '1', it would divide this wave into 2 64 sample wave tables. The quality is half (well, we
+              know this doesn't apply to a square wave), but the pitch goes up an octave (good for range). This also makes
+              duty cycles that aren't multiples of two stupid. If you do division of '2', there are 4 waves, extra octave,
+              more stupid duty cycles, less quality, etc... 6 is the highest value this can go, otherwise you're being stupid
+
+No Sanity Checks:
+              There is a such a thing as bad argument values, even disasterous ones. To save on execution overhead, no sanity
+              Checks are being done. So if you pick argument values too high or too stupid to fit within parameters
+              that make sense for this instrument, you can end up getting unintentional sounds, overwrite other
+              channels, or worse, overwrite the main program.
+                        
+}}
+              'Get Argument address
+InstPulse     mov       d1, par
+              mov       div, par
+              mov       table, par
+              'Calculate offsets
+              add       div, #4
+              add       table, #8
+              'De-reference
+              rdlong    d1, d1
+              rdlong    div, div
+              rdlong    table, table 
+                                                 'divisions
+              'Calculate Duties                  0  1   2   3   4   5
+              sub       d2, d1       '16 - duty (for the other duty)
+              shl       d1, #3                  '64  64  64  64  64  64
+              shl       d2, #3                  '64  64  64  64  64  64
+
+              'Adjust Duties based on divisions
+              shr       d1, div                 '64  32  16  8   4   2
+              shr       d2, div                 '64  32  16  8   4   2
+
+              'Adjust Div as proper multiples of 2 looping
+              mov       temp, #1                '1   1   1   1   1   1
+              shl       temp, div               '1   2   4   8   16  32
+              mov       div, temp               '1   2   4   8   16  32
+
+        :Start
+                        'Re-Init Duties
+                        mov     d1_cnt, d1
+                        mov     d2_cnt, d2
+                        cmp     div, #0 wz
+              if_z      jmp     #:End
+                        
+        :Duty1          cmp     d1_cnt, #0 wz
+                        if_z    jmp    #:Duty2
+                        wrlong  high, table
+                        add     table, #4
+                        sub     d1_cnt, #1
+                        jmp     #:Duty1
+        :Duty2          cmp     d2_cnt, #0 wz
+                        if_z    jmp    #:Set
+                        wrlong  low, table
+                        add     table, #4
+                        sub     d2_cnt, #1
+                        jmp     #:Duty2
+
+:Set          
+              sub       div, #1
+              jmp       #:Start
+
+:End          cogid     cid
+              cogstop   cid
+'Values
+temp     long  8
+high     long  $FFFFFFFF
+low      long  0
+d2       long  16
+
+d1       res 1
+d1_cnt   res 1
+d2_cnt   res 1
+div      res 1
+table    res 1
+
+cid      res 1
+
 DAT
 
               org       0
@@ -932,6 +524,12 @@ Notes:
      │     | Get mix and send it to PCM |                                                      
      ┻─────┫ engine (frqa)              |                                                                                          
            ------------------------------
+
+CALL/RET unrolling was intentional for each of the 4 channels. Though CALL/RET could save some (marginal)
+space, unrolling is better for performance. That and Propeller Assembly doesn't have a stack, so you can
+only have one RET (exit point) in a CALL/RET routine without doing some weird RET-index hacking. Also,
+not much space is saved rolling into CALL/RET here due to the large amount of parameters that would have
+to be MOVed into place before each of the CALLs
                         
 }}
 
@@ -983,8 +581,6 @@ PCM           mov       chan1_tic_adr, par      'freq1
               or        CtrCfg, p_pin           'add pin number to ctra mask
               mov       ctra, CtrCfg            'single ended duty
 
-
-              'POTENTIAL BUG
               rdlong    datastart, datastart
               add       p_chanadr1, datastart 
               add       p_chanadr2, p_chanadr1
@@ -1000,9 +596,7 @@ PCM           mov       chan1_tic_adr, par      'freq1
               add       m218, datastart
               add       m418, datastart
               add       m618, datastart
-              add       m818, datastart              
-              
-
+              add       m818, datastart
 
               'initialize tics
               rdlong    chan1_tic, chan1_tic_adr        '\
@@ -1015,7 +609,9 @@ PCM           mov       chan1_tic_adr, par      'freq1
               mov       frqa, p_temp                    'put it on the PWM engine
 
               'initialize durs
-:PStart       rdlong    chan1_dur, chan1_dur_adr        '\
+:PStart       mov       delaycnt, CNT
+              add       delaycnt, masterdelay
+              rdlong    chan1_dur, chan1_dur_adr        '\
               rdlong    chan2_dur, chan2_dur_adr        ' \
               rdlong    chan3_dur, chan3_dur_adr        '  \
               rdlong    chan4_dur, chan4_dur_adr        '   update local channel duration with main memory
@@ -1025,38 +621,47 @@ PCM           mov       chan1_tic_adr, par      'freq1
               rdlong    chan2_done, chan2_done_adr      ' \
               rdlong    chan3_done, chan3_done_adr      '  \
               rdlong    chan4_done, chan4_done_adr      '   update local flag data with main memory
-
-'Channel 1 update routine  
+          
+''Channel 1 update routine  
+              'Is channel 1 done?
 :Chan1        mov       p_temp, #1              '\
               sub       p_temp, chan1_done  wz  ' \
         if_z  jmp       #:Chan2               '  Is channel 1 flag set (done/1)
 
-              sub       chan1_tic, #1  wz     'decrement a tic, make note of if it hit zero
+              'Decrement a tic of holding the PWM at its current val
+              sub       chan1_tic, #1  wz
+
+              'Are the ticks empty/done/=0?
        if_nz  jmp       #:EndWave1            'if tics aren't done, skip getting next PCM and resetting tic
 
-              'NextPCM
+              'Go to the next PCM value for PWM output
               add       p_chanadr1, #4         'update p_chandr1 with address of next PCM value
               wrlong    p_chanadr1, p_mx_adr1  'put address of the next PCM value on p_mx_adr1 line for mixer
-              rdlong    chan1_tic, chan1_tic_adr  'reset chan1 tic to initialized value
 
-'end of wave?
+              'Reset tick count to initial parameter
+              rdlong    chan1_tic, chan1_tic_adr
+
+              'Is it at the end of the wave (index == 128)?
 :EndWave1     mov       p_temp, m214             'last address of PCM index (could be $214)
-              sub       p_temp, p_chanadr1  wz     'if at end, zero flag will set
+              sub       p_temp, p_chanadr1  wz   'if at end, zero flag will set
         if_nz jmp       #:Chan2                 'no need to update if not at end of index, proceed to next chan.      
 
-'check for new tic value        
+              'check for new tick value; change in frequency       
               rdlong    chan1_tic, chan1_tic_adr
-'go back to first PCM value
+
+              'Go back to first PCM value for the wave (reset index)
               mov       p_chanadr1, datastart         'go back to first PCM value
-'decrement loop count
+
+              'Decrement loop count (how many times to play that shape). Also update main memory with this value
               sub       chan1_dur, #1            'decrement amount of times to play wave
               wrlong    chan1_dur, chan1_dur_adr 'make sure main memory has an updated copy too                                   
-'is loop count 0?
+
+              'Is Loop Count down to 0?
               mov       p_temp, #0                 '  |if not 0, go to next channel
               sub       p_temp, chan1_dur  wz      '  |if it is, go to next step
         if_nz jmp       #:Chan2                  '
 
-'set chan1 to done
+              'set channel 1 (flag) to done
               mov       chan1_done, #1
               wrlong    chan1_done, chan1_done_adr 'update main memory as well                                                        
 
@@ -1159,10 +764,11 @@ PCM           mov       chan1_tic_adr, par      'freq1
 
 'set chan1 to done
               mov       chan4_done, #1
-              wrlong    chan4_done, chan4_done_adr 'update main memory as well                                                         
-
+              wrlong    chan4_done, chan4_done_adr 'update main memory as well
+              
 :Send         rdlong    p_temp, p_mx_out_adr    'get value of mix out
               mov       frqa, p_temp            'put it on the PCM
+              waitcnt   delaycnt, 0
               jmp       #:PStart
 
 
@@ -1233,6 +839,9 @@ p_chanadr1    long 0                          'address of chan1 wave uncompresse
 p_chanadr2    long $200                         'address of chan2 wave uncompressed
 p_chanadr3    long $400                         'address of chan3 wave uncompressed
 p_chanadr4    long $600                         'address of chan4 wave uncompressed
+
+masterdelay   long 892          'max time it would take to process all channels
+delaycnt      res 1
 
 fit     220            '496 is highest
 
