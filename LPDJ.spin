@@ -128,41 +128,44 @@ PUB main
 Start(15,100)
 
 Silent
-  duty := 8
-  divisions := 0
+
+  cognew(@InstPulse, @duty)
+  duty := 60
+  divisions := 30
   table_adr := @chan1
-  cognew(@InstPulse, @duty)
-  waitcnt(8000 + cnt)   
+  if duty < 0
+    duty := 8
+  if duty > 16
+    duty := 8
+  if divisions < 0
+    divisions := 0
+  if divisions > 6
+    divisions := 0
+  repeat until duty == $FFFFFFFF   
 
-  duty := 6
-  divisions := 0
+  cognew(@InstPulse, @duty)
+  duty := 8
+  divisions := 1
   table_adr := @chan2
-  cognew(@InstPulse, @duty)
-  waitcnt(8000 + cnt)
+  repeat until duty == $FFFFFFFF
 
-  duty := 4
-  divisions := 0
+  cognew(@InstPulse, @duty) 
+  duty := 8
+  divisions := 2
   table_adr := @chan3
-  cognew(@InstPulse, @duty)  
-  waitcnt(8000 + cnt)
+  repeat until duty == $FFFFFFFF
 
-  duty := 2
-  divisions := 0
+  cognew(@InstPulse, @duty)
+  duty := 8
+  divisions := 3
   table_adr := @chan4
-  cognew(@InstPulse, @duty)  
-  waitcnt(8000 + cnt)
+  repeat until duty == $FFFFFFFF
 
   'Re-run tests (in GEAR), to make sure all divisions work, and different duties work. Try other channels too
 
 repeat
  
   Playnote (1, 3, 1, 0, 0, 0, 5, 17)
-  waitcnt(clkfreq/2 + cnt)
-  Playnote (2, 3, 1, 0, 0, 0, 5, 17)
-  waitcnt(clkfreq/2 + cnt)
-  Playnote (3, 3, 1, 0, 0, 0, 5, 17)
-  waitcnt(clkfreq/2 + cnt)
-  Playnote (4, 3, 1, 0, 0, 0, 5, 17)  
   waitcnt(clkfreq/2 + cnt)
 
 PUB Start (audio_pin, d_div)
@@ -286,6 +289,9 @@ InstPulse     mov       d1, par
               rdlong    d1, d1
               rdlong    div, div
               rdlong    table, table 
+              'Let Caller Know We started (indirect hacky way)
+              mov       temp, par               'get address of first parameter
+              wrlong    high, temp
                                                  'divisions
               'Calculate Duties                  0  1   2   3   4   5
               sub       d2, d1       '16 - duty (for the other duty)
