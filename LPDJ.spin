@@ -129,14 +129,40 @@ Start(15,100)
 
 Silent
   duty := 8
-  divisions := 6
+  divisions := 0
   table_adr := @chan1
   cognew(@InstPulse, @duty)
+  waitcnt(8000 + cnt)   
+
+  duty := 6
+  divisions := 0
+  table_adr := @chan2
+  cognew(@InstPulse, @duty)
+  waitcnt(8000 + cnt)
+
+  duty := 4
+  divisions := 0
+  table_adr := @chan3
+  cognew(@InstPulse, @duty)  
+  waitcnt(8000 + cnt)
+
+  duty := 2
+  divisions := 0
+  table_adr := @chan4
+  cognew(@InstPulse, @duty)  
+  waitcnt(8000 + cnt)
+
   'Re-run tests (in GEAR), to make sure all divisions work, and different duties work. Try other channels too
 
 repeat
  
-  'Playnote (3, 3, 1, 0, 0, 0, 5, 17)
+  Playnote (1, 3, 1, 0, 0, 0, 5, 17)
+  waitcnt(clkfreq/2 + cnt)
+  Playnote (2, 3, 1, 0, 0, 0, 5, 17)
+  waitcnt(clkfreq/2 + cnt)
+  Playnote (3, 3, 1, 0, 0, 0, 5, 17)
+  waitcnt(clkfreq/2 + cnt)
+  Playnote (4, 3, 1, 0, 0, 0, 5, 17)  
   waitcnt(clkfreq/2 + cnt)
 
 PUB Start (audio_pin, d_div)
@@ -243,6 +269,10 @@ No Sanity Checks:
               Checks are being done. So if you pick argument values too high or too stupid to fit within parameters
               that make sense for this instrument, you can end up getting unintentional sounds, overwrite other
               channels, or worse, overwrite the main program.
+
+Misc Note:    You should wait about 8,000 clock cycles before launching the next instrument (waitcnt(8000 + cnt) or something similar)
+              This is because by the time this instrument is attempting to de-reference the wave table address, setting
+              a new parameter for a new instrument (in SPIN) can over-write in real-time before this cog has dereferenced.
                         
 }}
               'Get Argument address
