@@ -2,8 +2,7 @@
 PCM Driver - 1-16 bit (can be modified on the fly for effects)
 AUTHOR: XlogicX
 Copyright (c) 2009 (MIT Terms of use; see end of file)
-LAST MODIFIED: 9.24.15
-VERSION 2.5
+LAST MODIFIED: 5.26.19
 NOTE, this code is a mix of the Spin language, and Assembly.
 The Assembly is what is doing the work
 The Spin is effectively the API to play a note
@@ -62,7 +61,6 @@ Ver 2.5 [9-3-2009]:
 }}
 
 CON
-CON
   _clkmode = xtal1 + pll16x
   _xinfreq = 5_000_000
 
@@ -112,9 +110,22 @@ long    ch4_done      '116           x
 long    pin           '120           'what pin to send the audio to
 
 'Instrument Variables
+'  Seperate variables are used for each channel. I could use just one set, but
+'  then we would have to wait about 8,000 cycles (about how long a cog takes
+'  to get loaded) until we could load the next one, due to variables paving over
+'  before the cog is even ready for the values.
 long    duty
 long    divisions
 long    table_adr
+long    duty2
+long    divisions2
+long    table_adr2
+long    duty3
+long    divisions3
+long    table_adr3
+long    duty4
+long    divisions4
+long    table_adr4
 
 long    pitch_bal                    'variable used to even out duration based on pitch
 long    dur_div                      'what number equals a second with dur parameter. For example, if dur_div is 100, a
@@ -124,49 +135,34 @@ long    w_note2
 long    split1
 long    split2
 
+long    dutyval
 PUB main
 Start(15,100)
 
-Silent
-
-  cognew(@InstPulse, @duty)
-  duty := 60
-  divisions := 30
-  table_adr := @chan1
-  if duty < 0
-    duty := 8
-  if duty > 16
-    duty := 8
-  if divisions < 0
-    divisions := 0
-  if divisions > 6
-    divisions := 0
-  repeat until duty == $FFFFFFFF   
-
-  cognew(@InstPulse, @duty)
-  duty := 8
-  divisions := 1
-  table_adr := @chan2
-  repeat until duty == $FFFFFFFF
-
-  cognew(@InstPulse, @duty) 
-  duty := 8
-  divisions := 2
-  table_adr := @chan3
-  repeat until duty == $FFFFFFFF
-
-  cognew(@InstPulse, @duty)
-  duty := 8
-  divisions := 3
-  table_adr := @chan4
-  repeat until duty == $FFFFFFFF
-
-  'Re-run tests (in GEAR), to make sure all divisions work, and different duties work. Try other channels too
-
-repeat
+      'cognew(@InstTriangle, @duty)
+      'duty := 8
+      'divisions := 0
+      'table_adr := @chan1
  
-  Playnote (1, 3, 1, 0, 0, 0, 5, 17)
-  waitcnt(clkfreq/2 + cnt)
+
+SineWave(3, 8, 6)
+'TriangleWave(2, 8, 0)
+'PulseWave(1, 8, 0)
+'SineWave(4, 8, 0)   
+
+
+repeat 8
+ 
+  Playnote (3, 10, 0, 0, 0, 0, 5, 17)
+'  Playnote (4, 16, 0, 0, 0, 0, 5, 17)
+  waitcnt(clkfreq/4 + cnt)
+'  Playnote (2, 2, 0, 0, 0, 0, 5, 17)
+'  waitcnt(clkfreq/4 + cnt)
+'  Playnote (1, 2, 1, 0, 0, 0, 5, 17)
+'  waitcnt(clkfreq/4 + cnt)
+'  Playnote (4, 9, 0, 0, 0, 0, 5, 17)
+'  waitcnt(clkfreq/2 + cnt) 
+
 
 PUB Start (audio_pin, d_div)
  
@@ -249,7 +245,173 @@ PUB PlayNote (chan, pitch, vol, Wqual, garb, ors, dur, waveshape)
       shape4      := waveshape
       DecomFlags := %1000
       ch4_done   := 0
-      
+
+PUB PulseWave(channel, dut, divs)
+  case channel
+    1:
+      cognew(@InstPulse, @duty)
+      duty := dut
+      if duty < 0
+        duty := 8
+      if duty > 16
+       duty := 8
+      divisions := divs
+      if divisions < 0
+        divisions := 0
+      if divisions > 6
+        divisions := 0
+      table_adr := @chan1
+    2:
+      cognew(@InstPulse, @duty2)
+      duty2 := dut
+      if duty2 < 0
+        duty2 := 8
+      if duty2 > 16
+       duty2 := 8
+      divisions2 := divs
+      if divisions2 < 0
+        divisions2 := 0
+      if divisions2 > 6
+        divisions2 := 0
+      table_adr2 := @chan2
+    3:
+      cognew(@InstPulse, @duty3)
+      duty3 := dut
+      if duty3 < 0
+        duty3 := 8
+      if duty3 > 16
+       duty3 := 8
+      divisions3 := divs
+      if divisions3 < 0
+        divisions3 := 0
+      if divisions3 > 6
+        divisions3 := 0
+      table_adr3 := @chan3
+    4:
+      cognew(@InstPulse, @duty4)
+      duty4 := dut
+      if duty4 < 0
+        duty4 := 8
+      if duty4 > 16
+       duty4 := 8
+      divisions4 := divs
+      if divisions4 < 0
+        divisions4 := 0
+      if divisions4 > 6
+        divisions4 := 0
+      table_adr4 := @chan4
+
+PUB TriangleWave(channel, dut, divs)
+  case channel
+    1:
+      cognew(@InstTriangle, @duty)
+      duty := dut
+      if duty < 0
+        duty := 8
+      if duty > 16
+       duty := 8
+      divisions := divs
+      if divisions < 0
+        divisions := 0
+      if divisions > 6
+        divisions := 0
+      table_adr := @chan1
+    2:
+      cognew(@InstTriangle, @duty2)
+      duty2 := dut
+      if duty2 < 0
+        duty2 := 8
+      if duty2 > 16
+       duty2 := 8
+      divisions2 := divs
+      if divisions2 < 0
+        divisions2 := 0
+      if divisions2 > 6
+        divisions2 := 0
+      table_adr2 := @chan2
+    3:
+      cognew(@InstTriangle, @duty3)
+      duty3 := dut
+      if duty3 < 0
+        duty3 := 8
+      if duty3 > 16
+       duty3 := 8
+      divisions3 := divs
+      if divisions3 < 0
+        divisions3 := 0
+      if divisions3 > 6
+        divisions3 := 0
+      table_adr3 := @chan3
+    4:
+      cognew(@InstTriangle, @duty4)
+      duty4 := dut
+      if duty4 < 0
+        duty4 := 8
+      if duty4 > 16
+       duty4 := 8
+      divisions4 := divs
+      if divisions4 < 0
+        divisions4 := 0
+      if divisions4 > 6
+        divisions4 := 0
+      table_adr4 := @chan4
+
+
+PUB SineWave(channel, dut, divs)
+  case channel
+    1:
+      cognew(@InstSine, @duty)
+      duty := dut
+      if duty < 1
+        duty := 1
+      if duty > 15
+       duty := 15
+      divisions := divs
+      if divisions < 0
+        divisions := 0
+      if divisions > 6
+        divisions := 0
+      table_adr := @chan1
+    2:
+      cognew(@InstSine, @duty2)
+      duty2 := dut
+      if duty2 < 1
+        duty2 := 1
+      if duty2 > 15
+       duty2 := 15
+      divisions2 := divs
+      if divisions2 < 0
+        divisions2 := 0
+      if divisions2 > 6
+        divisions2 := 0
+      table_adr2 := @chan2
+    3:
+      cognew(@InstSine, @duty3)
+      duty3 := dut
+      if duty3 < 1
+        duty3 := 1
+      if duty3 > 15
+       duty3 := 15
+      divisions3 := divs
+      if divisions3 < 0
+        divisions3 := 0
+      if divisions3 > 6
+        divisions3 := 0
+      table_adr3 := @chan3
+    4:
+      cognew(@InstSine, @duty4)
+      duty4 := dut
+      if duty4 < 1
+        duty4 := 1
+      if duty4 > 15
+       duty4 := 15
+      divisions4 := divs
+      if divisions4 < 0
+        divisions4 := 0
+      if divisions4 > 6
+        divisions4 := 0
+      table_adr4 := @chan4
+            
 DAT
 
               org       0
@@ -267,16 +429,14 @@ Divisions:    0-6: There are 128 sample values per wave table. Best audio qualit
               duty cycles that aren't multiples of two stupid. If you do division of '2', there are 4 waves, extra octave,
               more stupid duty cycles, less quality, etc... 6 is the highest value this can go, otherwise you're being stupid
 
-No Sanity Checks:
-              There is a such a thing as bad argument values, even disasterous ones. To save on execution overhead, no sanity
-              Checks are being done. So if you pick argument values too high or too stupid to fit within parameters
-              that make sense for this instrument, you can end up getting unintentional sounds, overwrite other
-              channels, or worse, overwrite the main program.
+Defaults:     If you pick a Duty Cycle out of range (0-16), a default of '8' will be selected, for 'half' duty. If you pick
+              a Division value that is out of range (0-6), then a default of '0' will be selected (no divisions).
 
-Misc Note:    You should wait about 8,000 clock cycles before launching the next instrument (waitcnt(8000 + cnt) or something similar)
-              This is because by the time this instrument is attempting to de-reference the wave table address, setting
-              a new parameter for a new instrument (in SPIN) can over-write in real-time before this cog has dereferenced.
-                        
+Timing:       It takes about 7,800 cycles to load a cog.
+              Depending on divisions, this can take a total of 12,182 - 15,206 cycles to run (4,288 to 7,312 cog)
+              On 80 Mhz, this is 152 - 190 microseconds
+              On 100 Mhz, this is 121 - 152 microseconds
+
 }}
               'Get Argument address
 InstPulse     mov       d1, par
@@ -289,9 +449,6 @@ InstPulse     mov       d1, par
               rdlong    d1, d1
               rdlong    div, div
               rdlong    table, table 
-              'Let Caller Know We started (indirect hacky way)
-              mov       temp, par               'get address of first parameter
-              wrlong    high, temp
                                                  'divisions
               'Calculate Duties                  0  1   2   3   4   5
               sub       d2, d1       '16 - duty (for the other duty)
@@ -346,6 +503,335 @@ div      res 1
 table    res 1
 
 cid      res 1
+
+
+DAT
+              org       0
+{{
+                                            **********************************
+--------------------------------------------*      Triangle Instrument:      *------------------------------------------------------
+                                            **********************************
+                                            
+Function:     This is a Triangle/Saw Wave instrument. It takes two duty cycle arguments and a divisional argument.
+Duty Cycle:   0-16: The duty cycle value is a value from 0-16, but 1-15 would make the most sense audibly. Values outside of this
+              range would be considered stupid
+Divisions:    0-6: There are 128 sample values per wave table. Best audio quality would be to set divisions at 0. However, if you
+              set the divisions to '1', it would divide this wave into 2 64 sample wave tables. The quality is half, but the
+              pitch goes up an octave (good for range). This also makes duty cycles that aren't multiples of two stupid.
+              If you do division of '2', there are 4 waves, extra octave, more stupid duty cycles, less quality, etc...
+              6 is the highest value this can go, otherwise you're being stupid
+
+Defaults:     If you pick a Duty Cycle out of range (0-16), a default of '8' will be selected, for 'half' duty. If you pick
+              a Division value that is out of range (0-6), then a default of '0' will be selected (no divisions).
+
+Timing:       It takes about 7,800 cycles to load a cog.
+              Depending on divisions, this can take a total of 12,246 - 16,278 cycles to run (4,370 to 8,384 cog)
+              On 80 Mhz, this is 153 - 203 microseconds
+              On 100 Mhz, this is 122 - 163 microseconds                             
+}}
+              'Get Argument address
+InstTriangle  mov       t_d1, par
+              mov       t_div, par
+              mov       t_table, par
+              'Calculate offsets
+              add       t_div, #4
+              add       t_table, #8
+              'De-reference
+              rdlong    t_d1, t_d1
+              rdlong    t_div, t_div
+              rdlong    t_table, t_table 
+
+              'Calculate Step Scale based on Duty cycles
+              sub       t_d2, t_d1               '16 - duty (for the other duty) 
+
+              mov       t_step_val_1, #t_stepval0       'get first step value from lookup (get address of)
+              add       t_step_val_1, t_d1              'Adjust offset              
+              movs      t_dref1, t_step_val_1
+              movd      t_adj1, t_step_val_1             
+
+              mov       t_step_val_2, #t_stepval0       'get first step value from lookup
+              add       t_step_val_2, t_d2              'Adjust offset              
+              movs      t_dref2, t_step_val_2
+              movd      t_adj2, t_step_val_2
+                                                 'divisions
+              'Calculate Duties                  0  1   2   3   4   5
+              shl       t_d1, #3                  '64  64  64  64  64  64
+              shl       t_d2, #3                  '64  64  64  64  64  64
+
+              'Adjust Duties based on divisions
+              shr       t_d1, t_div                 '64  32  16  8   4   2
+              shr       t_d2, t_div                 '64  32  16  8   4   2
+       t_adj1 shl       t_step_val_1, t_div
+              cmp       t_d1, #32  wz               'if half duty cycle
+        if_z  jmp       #skip_adjust2                'skip the 2nd shift, because same location is being refered to (don't shift again)
+       t_adj2 shl       t_step_val_2, t_div
+                                
+       
+              'Adjust Div as proper multiples of 2 looping
+skip_adjust2  mov       t_temp, #1                  '1   1   1   1   1   1
+              shl       t_temp, t_div               '1   2   4   8   16  32
+              mov       t_div, t_temp               '1   2   4   8   16  32
+
+        t_Start
+                        'Re-Init Duties
+                        mov     t_d1_cnt, t_d1
+                        mov     t_d2_cnt, t_d2
+                        mov     t_step_num, #0
+                        cmp     t_div, #0 wz
+              if_z      jmp     #t_End
+                        
+        t_Duty1         cmp     t_d1_cnt, #0 wz
+                        if_z    jmp    #t_Duty2
+                        wrlong  t_step_num, t_table
+        t_dref1         add     t_step_num, t_step_val_1
+                        add     t_table, #4
+                        sub     t_d1_cnt, #1
+                        jmp     #t_Duty1
+        t_Duty2         cmp     t_d2_cnt, #0 wz
+                        if_z    jmp    #t_Set
+                        wrlong  t_step_num, t_table
+        t_dref2         sub     t_step_num, t_step_val_2
+                        add     t_table, #4
+                        sub     t_d2_cnt, #1
+                        jmp     #t_Duty2
+
+t_Set          
+              sub       t_div, #1
+              jmp       #t_Start
+
+t_End          cogid     t_cid
+              cogstop   t_cid
+'Values
+t_temp     long  8
+t_d2       long  16
+t_step_num long  0
+' Pre-computed Duty Cycle Scale Table
+t_stepval0    long $FFFFFFFF
+t_stepval1    long $1FFFFFFF
+t_stepval2    long $FFFFFFF
+t_stepval3    long $AAAAAA9
+t_stepval4    long $7FFFFFF
+t_stepval5    long $6666665
+t_stepval6    long $5555554
+t_stepval7    long $4924923
+t_stepval8    long $3FFFFFF
+t_stepval9    long $38E38E2
+t_stepval10   long $3333332
+t_stepval11   long $2E8BA2D
+t_stepval12   long $2AAAAA9
+t_stepval13   long $2762761
+t_stepval14   long $2492491
+t_stepval15   long $2222221
+t_stepval16   long $1FFFFFF
+
+t_step_val_1 res 1
+t_step_val_2 res 1
+t_d1       res 1
+t_d1_cnt   res 1
+t_d2_cnt   res 1
+t_div      res 1
+t_table    res 1
+
+t_cid      res 1
+
+DAT
+
+              org       0
+{{
+                                            **********************************
+--------------------------------------------*     SineWave Instrument:      *------------------------------------------------------
+                                            **********************************
+                                            
+Function:     This is a sinewave instrument. It takes two duty cycle arguments and a divisional argument.
+Duty Cycle:   0-16: The duty cycle value is a value from 0-16, but 1-15 would make the most sense audibly. Values outside of this
+              range would be considered stupid
+Divisions:    0-6: There are 128 sample values per wave table. Best audio quality would be to set divisions at 0. However, if you
+              set the divisions to '1', it would divide this wave into 2 64 sample wave tables. The quality is half, but the pitch
+              goes up an octave (good for range). If you do division of '2', there are 4 waves, extra octave, less quality, etc...
+              6 is the highest value this can go, otherwise you're being stupid
+
+Defaults:     If you pick a Duty Cycle out of range (1-15), a default of '1' or '15' will be selected. If you pick
+              a Division value that is out of range (0-6), then a default of '0' will be selected (no divisions).
+
+Timing:       It takes about 7,800 cycles to load a cog.
+              Depending on divisions, this can take a total of 12,322 - 15490 cycles to run (3,732? to 7,600? cog)
+              On 100 Mhz, this is 123? - 155? microseconds
+
+              Sine Table ROM Address Range for Quadrant 1. $E000 - $F001
+
+}}
+              'Get Argument address
+InstSine      mov       s_d1, par
+              mov       s_div, par
+              mov       s_table, par
+              'Calculate offsets
+              add       s_div, #4
+              add       s_table, #8
+              'De-reference
+              rdlong    s_d1, s_d1
+              rdlong    s_div, s_div
+              rdlong    s_table, s_table 
+
+              'Calculate Stepping
+              cmp       s_d1, #15 wz
+        if_z  mov       s_sinstep, #$44
+        if_z  mov       s_sinstep2, s_400
+              cmp       s_d1, #14 wz
+        if_z  mov       s_sinstep, #$49
+        if_z  mov       s_sinstep2, s_200
+              cmp       s_d1, #13 wz
+        if_z  mov       s_sinstep, #$4e
+        if_z  mov       s_sinstep2, #$155
+              cmp       s_d1, #12 wz
+        if_z  mov       s_sinstep, #$55
+        if_z  mov       s_sinstep2, #$100
+              cmp       s_d1, #11 wz
+        if_z  mov       s_sinstep, #$5d
+        if_z  mov       s_sinstep2, #$cc
+              cmp       s_d1, #10 wz
+        if_z  mov       s_sinstep, #$66
+        if_z  mov       s_sinstep2, #$aa
+              cmp       s_d1, #9 wz
+        if_z  mov       s_sinstep, #$71
+        if_z  mov       s_sinstep2, #$92
+              cmp       s_d1, #8 wz
+        if_z  mov       s_sinstep, #$80
+        if_z  mov       s_sinstep2, #$80
+              cmp       s_d1, #7 wz
+        if_z  mov       s_sinstep, #$92
+        if_z  mov       s_sinstep2, #$71
+              cmp       s_d1, #6 wz
+        if_z  mov       s_sinstep, #$aa
+        if_z  mov       s_sinstep2, #$66
+              cmp       s_d1, #5 wz
+        if_z  mov       s_sinstep, #$cc
+        if_z  mov       s_sinstep2, #$5d
+              cmp       s_d1, #4 wz
+        if_z  mov       s_sinstep, #$100
+        if_z  mov       s_sinstep2, #$55
+              cmp       s_d1, #3 wz
+        if_z  mov       s_sinstep, #$155
+        if_z  mov       s_sinstep2, #$4e
+              cmp       s_d1, #2 wz
+        if_z  mov       s_sinstep, s_200
+        if_z  mov       s_sinstep2, #$49
+              cmp       s_d1, #1 wz
+        if_z  mov       s_sinstep, s_400
+        if_z  mov       s_sinstep2, #$44                                                                                                        
+
+              'Adjust Stepping based on divisions
+              shl       s_sinstep, s_div
+              shl       s_sinstep2, s_div
+                                            
+              'Calculate Duties                
+              sub       s_d2, s_d1       '16 - duty (for the other duty)
+              shl       s_d1, #2                 
+              shl       s_d2, #2               
+
+              'Adjust Duties based on divisions
+              shr       s_d1, s_div                 
+              shr       s_d2, s_div               
+
+              'Adjust Div as proper multiples of 2 looping
+              mov       s_temp, #1                
+              shl       s_temp, s_div               
+              mov       s_div, s_temp
+
+              'Setup SineStepping               
+
+        :s_Start
+                        'Re-Init Duties
+                        mov     s_d1_cnt, s_d1
+                        mov     s_d2_cnt, s_d1
+                        mov     s_d3_cnt, s_d2
+                        mov     s_d4_cnt, s_d2
+                        cmp     s_div, #0 wz
+              if_z      jmp     #:s_End
+                        
+        :s_Quadrant1    cmp     s_d1_cnt, #0 wz
+                        if_z    jmp    #:s_Quadrant2
+
+                        rdlong  s_sinsamp, s_sinaddr
+                        shr     s_sinsamp, #1
+                        add     s_sinsamp, s_middle
+                        wrlong  s_sinsamp, s_table
+                        add     s_sinaddr, s_sinstep
+
+                        add     s_table, #4
+                        sub     s_d1_cnt, #1
+                        jmp     #:s_Quadrant1
+
+        :s_Quadrant2    cmp     s_d2_cnt, #0 wz
+                        if_z    jmp    #:s_Quadrant3
+
+                        sub     s_sinaddr, s_sinstep
+                        rdlong  s_sinsamp, s_sinaddr
+                        shr     s_sinsamp, #1
+                        add     s_sinsamp, s_middle
+                        wrlong  s_sinsamp, s_table
+                        
+                        add     s_table, #4
+                        sub     s_d2_cnt, #1
+                        jmp     #:s_Quadrant2
+
+        :s_Quadrant3    cmp     s_d3_cnt, #0 wz
+                        if_z    jmp    #:s_Quadrant4
+
+                        rdlong  s_sinsamp, s_sinaddr
+                        shr     s_sinsamp, #1
+                        mov     s_temp, s_middle
+                        sub     s_temp, s_sinsamp
+                        mov     s_sinsamp, s_temp
+                        wrlong  s_sinsamp, s_table
+                        add     s_sinaddr, s_sinstep2
+                        
+                        add     s_table, #4
+                        sub     s_d3_cnt, #1
+                        jmp     #:s_Quadrant3
+
+        :s_Quadrant4    cmp     s_d4_cnt, #0 wz
+                        if_z    jmp    #:s_Set
+
+                        sub     s_sinaddr, s_sinstep2
+                        rdlong  s_sinsamp, s_sinaddr
+                        shr     s_sinsamp, #1
+                        mov     s_temp, s_middle
+                        sub     s_temp, s_sinsamp
+                        mov     s_sinsamp, s_temp
+                        wrlong  s_sinsamp, s_table
+                        
+                        add     s_table, #4
+                        sub     s_d4_cnt, #1
+                        jmp     #:s_Quadrant4                        
+
+:s_Set          
+              sub       s_div, #1
+              jmp       #:s_Start
+
+:s_End        cogid     s_cid
+              cogstop   s_cid
+'Values
+s_temp     long  8
+s_d2       long  16
+s_sinaddr  long  $E000
+s_sinstep  long  $80
+s_sinstep2 long  $80
+s_middle   long  $80000000
+s_200      long  $200
+s_400      long  $400
+
+s_d1       res 1
+s_d1_cnt   res 1
+s_d2_cnt   res 1
+s_d3_cnt   res 1
+s_d4_cnt   res 1
+s_div      res 1
+s_table    res 1
+
+s_sinsamp  res 1
+
+s_cid      res 1
+
 
 DAT
 
