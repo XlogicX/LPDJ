@@ -2,7 +2,8 @@
 PCM Driver - 1-16 bit (can be modified on the fly for effects)
 AUTHOR: XlogicX
 Copyright (c) 2009 (MIT Terms of use; see end of file)
-LAST MODIFIED: 5.26.19
+LAST MODIFIED: 9.24.15
+VERSION 2.5
 NOTE, this code is a mix of the Spin language, and Assembly.
 The Assembly is what is doing the work
 The Spin is effectively the API to play a note
@@ -59,11 +60,6 @@ Ver 2.5 [9-3-2009]:
    does PCM, successfully.
 
 }}
-
-CON
-  _clkmode = xtal1 + pll16x
-  _xinfreq = 5_000_000
-
   
 DAT
 'Channels
@@ -132,37 +128,10 @@ long    dur_div                      'what number equals a second with dur param
                                      'value of 50 passed to the dur param would be half a second.
 long    w_note2
 
-long    split1
-long    split2
-
 long    dutyval
-PUB main
-Start(15,100)
 
-      'cognew(@InstTriangle, @duty)
-      'duty := 8
-      'divisions := 0
-      'table_adr := @chan1
- 
-
-SineWave(3, 8, 6)
-'TriangleWave(2, 8, 0)
-'PulseWave(1, 8, 0)
-'SineWave(4, 8, 0)   
-
-
-repeat 8
- 
-  Playnote (3, 10, 0, 0, 0, 0, 5, 17)
-'  Playnote (4, 16, 0, 0, 0, 0, 5, 17)
-  waitcnt(clkfreq/4 + cnt)
-'  Playnote (2, 2, 0, 0, 0, 0, 5, 17)
-'  waitcnt(clkfreq/4 + cnt)
-'  Playnote (1, 2, 1, 0, 0, 0, 5, 17)
-'  waitcnt(clkfreq/4 + cnt)
-'  Playnote (4, 9, 0, 0, 0, 0, 5, 17)
-'  waitcnt(clkfreq/2 + cnt) 
-
+long    rand
+long    index
 
 PUB Start (audio_pin, d_div)
  
@@ -194,7 +163,7 @@ PUB Start (audio_pin, d_div)
 PUB Silent
   volume := volume2 := volume3 := volume4 := 20
 
-PUB PlayNote (chan, pitch, vol, Wqual, garb, ors, dur, waveshape)
+PUB PlayNote (chan, pitch, vol, Wqual, garb, ors, dur)
 
   'dur convert
   pitch_bal := pitch
@@ -209,7 +178,6 @@ PUB PlayNote (chan, pitch, vol, Wqual, garb, ors, dur, waveshape)
       garble     := garb
       comp_flag   := ors
       duration   := dur
-      shape      := waveshape
       DecomFlags := %0001
       ch1_done   := 0
       return
@@ -220,7 +188,6 @@ PUB PlayNote (chan, pitch, vol, Wqual, garb, ors, dur, waveshape)
       garble     := garb
       comp_flag   := ors        
       duration2   := dur
-      shape2      := waveshape
       DecomFlags := %0010
       ch2_done   := 0
       return
@@ -231,7 +198,6 @@ PUB PlayNote (chan, pitch, vol, Wqual, garb, ors, dur, waveshape)
       garble     := garb
       comp_flag   := ors             
       duration3   := dur
-      shape3      := waveshape
       DecomFlags := %0100
       ch3_done   := 0
       return
@@ -242,7 +208,6 @@ PUB PlayNote (chan, pitch, vol, Wqual, garb, ors, dur, waveshape)
       garble     := garb
       comp_flag   := ors             
       duration4   := dur
-      shape4      := waveshape
       DecomFlags := %1000
       ch4_done   := 0
 
@@ -411,7 +376,38 @@ PUB SineWave(channel, dut, divs)
       if divisions4 > 6
         divisions4 := 0
       table_adr4 := @chan4
-            
+
+PUB NoiseWave(channel)
+{{
+                                            **********************************
+--------------------------------------------*       Noise Instrument:        *------------------------------------------------------
+                                            **********************************
+                                            
+Function:     This is a simple instrument that fills the wave channel with random values. The only argument needed is which
+              one of the four channels you want loaded with noise
+
+Timing:       It takes about 21,120 clocks to load a channel with noise.
+              On 100 Mhz, this would be 211 microseconds
+}}
+  index := 0
+  case channel
+    1:
+      repeat 128
+        chan1[index] := ?rand
+        index++  
+    2:
+      repeat 128
+        chan2[index] := ?rand
+        index++ 
+    3:
+      repeat 128
+        chan3[index] := ?rand
+        index++ 
+    4:  
+      repeat 128
+        chan4[index] := ?rand
+        index++
+                    
 DAT
 
               org       0
