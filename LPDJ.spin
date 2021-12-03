@@ -131,7 +131,9 @@ long    w_note2
 long    dutyval
 
 long    rand
+long    rchoice
 long    index
+long    voltage
 
 PUB Start (audio_pin, d_div)
  
@@ -407,6 +409,64 @@ Timing:       It takes about 21,120 clocks to load a channel with noise.
       repeat 128
         chan4[index] := ?rand
         index++
+
+PUB AddNoise(channel, ammount, magnitude)
+{{
+                                            **********************************
+--------------------------------------------*    Make Wave Table Noisier:    *------------------------------------------------------
+                                            **********************************
+                                            
+Function:     Add some noise to a wave table. Knowing that there are 128 samples per wave table, the 'ammount' value affects how
+              many potential samples will deviate (1-128). The magnitude is how much that sample level (voltage) will deviate,
+              from where it's currently at (1-$FFFFFFFF). 
+}}
+  
+  index := 0
+  case channel
+    1:
+      repeat 128
+        rchoice := ?rand & $0000FFFF  'Get random value from 0-$FFFF
+        rchoice /= $1FF
+        if rchoice < ammount    'If we want to add noise to this voltage then
+          voltage := chan1[index]    'get the voltage
+          if voltage < 0
+            chan1[index] := voltage - (((?rand & $0FFFFFFF) // magnitude) * 8)
+          else
+            chan1[index] := voltage + (((?rand & $0FFFFFFF) // magnitude) * 8)
+        index++  
+    2:
+      repeat 128
+        rchoice := ?rand & $0000FFFF  'Get random value from 0-$FFFF
+        rchoice /= $1FF
+        if rchoice < ammount    'If we want to add noise to this voltage then
+          voltage := chan2[index]    'get the voltage
+          if voltage < 0
+            chan2[index] := voltage - (((?rand & $0FFFFFFF) // magnitude) * 8)
+          else
+            chan2[index] := voltage + (((?rand & $0FFFFFFF) // magnitude) * 8)
+        index++ 
+    3:
+      repeat 128
+        rchoice := ?rand & $0000FFFF  'Get random value from 0-$FFFF
+        rchoice /= $1FF
+        if rchoice < ammount    'If we want to add noise to this voltage then
+          voltage := chan3[index]    'get the voltage
+          if voltage < 0
+            chan3[index] := voltage - (((?rand & $0FFFFFFF) // magnitude) * 8)
+          else
+            chan3[index] := voltage + (((?rand & $0FFFFFFF) // magnitude) * 8)
+        index++ 
+    4:  
+      repeat 128
+        rchoice := ?rand & $0000FFFF  'Get random value from 0-$FFFF
+        rchoice /= $1FF
+        if rchoice < ammount    'If we want to add noise to this voltage then
+          voltage := chan4[index]    'get the voltage
+          if voltage < 0
+            chan4[index] := voltage - (((?rand & $0FFFFFFF) // magnitude) * 8)
+          else
+            chan4[index] := voltage + (((?rand & $0FFFFFFF) // magnitude) * 8)
+        index++ 
                     
 DAT
 
@@ -1358,7 +1418,7 @@ p_chanadr2    long $200                         'address of chan2 wave uncompres
 p_chanadr3    long $400                         'address of chan3 wave uncompressed
 p_chanadr4    long $600                         'address of chan4 wave uncompressed
 
-masterdelay   long 892          'max time it would take to process all channels
+masterdelay   long 887          'max time it would take to process all channels
 delaycnt      res 1
 
 fit     220            '496 is highest
